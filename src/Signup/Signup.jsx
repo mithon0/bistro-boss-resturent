@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Signup = () => {
-    const {registerd}=useContext(AuthContext)
+    const {registerd,updateUser}=useContext(AuthContext)
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const onSubmit = data => {
        
         const email =data.email;
@@ -18,6 +19,14 @@ const Signup = () => {
         registerd(email,password)
         .then(result=>{
             console.log(result.user);
+            reset()
+            updateUser(data.name,data.photo)
+            .then(()=>{
+                console.log("updateuser");
+                Swal.fire('register successfully')
+                
+            })
+            .catch(()=>{})
         })
         .catch(err=>{
             console.log(err.massage);
@@ -80,7 +89,7 @@ const Signup = () => {
 
 
                         <input className='w-full p-2 mt-3 bg-[#D1A054B2] text-white rounded-lg' type="submit" />
-                        <small className='text-[#D1A054]'>New Here?<Link to='/register'>Create new account</Link></small>
+                        <small className='text-[#D1A054]'>New Here?<Link to='/login'>alredy have an account?login</Link></small>
                         <p className='text-center mt-6 font-semibold'>Or sign in with</p>
                         <div className='flex justify-center mx-auto gap-10 mt-5'>
                             <BsFacebook className='text-4xl' />

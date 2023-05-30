@@ -1,7 +1,42 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../AuthProvider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Navber = () => {
+  const {user,logOutH}=useContext(AuthContext)
+  
+  const logOutHandler =()=>{
+    Swal.fire({
+      title: 'Want to logOut?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOutH()
+    .then(result=>{
+        console.log(result);
+    })
+    .catch(err=>{
+      console.log(err.message);
+    })
+
+        Swal.fire(
+          'LogOut',
+          'Your Account signOut.',
+          'success'
+        )
+      }
+    })
+
+
+    
+  }
   return (
     <div className="navbar fixed z-10 bg-opacity-30 max-w-7xl bg-base-100">
       <div className="navbar-start">
@@ -13,7 +48,11 @@ const Navber = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/manu">Manu</Link></li>
             <li><Link to="/order">Our Shop</Link></li>
-            <li><Link to="/login">login</Link></li>
+
+            {
+              user?<li><Link>LogOut</Link></li>:<li><Link to="/login">login</Link></li>
+            }
+            
 
             
           </ul>
@@ -25,11 +64,15 @@ const Navber = () => {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/manu">Manu</Link></li>
           <li><Link to="/order/salad">Our Shop</Link></li>
-          <li><Link to="/login">login</Link></li>
+          <li><Link to="/secret">Secrate</Link></li>
+          {
+              user?<li><button onClick={logOutHandler} className='btn btn-ghost'>LogOut</button></li>:<li><Link to="/login">login</Link></li>
+            }
+            
         </ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Get started</a>
+      <div className="navbar-end  ">
+       <img className='w-10 rounded-full' src={user?.photoURL} alt=""  title={user?.displayName}/>
       </div>
     </div>
   );

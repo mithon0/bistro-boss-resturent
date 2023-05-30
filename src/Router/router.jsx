@@ -8,6 +8,8 @@ import Manu from "../Pages/Manu/Manu";
 import Order from "../Order/Order";
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
+import Secrate from "../Pages/Secrate/Secrate";
+import PrivetRouter from "./PrivetRouter";
 
 
 
@@ -35,6 +37,10 @@ export const router = createBrowserRouter([
         {
           path:'/register',
           element:<Signup></Signup>
+        },
+        {
+          path:'/secret',
+          element:<PrivetRouter><Secrate></Secrate></PrivetRouter>
         }
       ]
     },
